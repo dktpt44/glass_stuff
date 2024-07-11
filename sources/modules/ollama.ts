@@ -1,11 +1,43 @@
 import axios from 'axios';
 import { backoff } from "../utils/time";
-import { trimIdent } from '../utils/trimIdent';
-import { toBase64 } from '../utils/base64';
-import { keys } from '../keys';
+import { keys } from '../utils/keys';
 import ollama from 'ollama';
 
-// export const ollama = new Ollama({ host: 'https://ai-1.korshakov.com' });
+function toBase64Image(src: Uint8Array) {
+    const characters = Array.from(src, (byte) => String.fromCharCode(byte)).join('');
+    return 'data:image/jpeg;base64,' + btoa(characters);
+}
+
+
+function trimIdent(text: string): string {
+    // Split the text into an array of lines
+    const lines = text.split('\n');
+
+    // Remove leading and trailing empty lines
+    while (lines.length > 0 && lines[0].trim() === '') {
+        lines.shift();
+    }
+    while (lines.length > 0 && lines[lines.length - 1].trim() === '') {
+        lines.pop();
+    }
+
+    // Find the minimum number of leading spaces in non-empty lines
+    const minSpaces = lines.reduce((min, line) => {
+        if (line.trim() === '') {
+            return min;
+        }
+        const leadingSpaces = line.match(/^\s*/)![0].length;
+        return Math.min(min, leadingSpaces);
+    }, Infinity);
+
+    // Remove the common leading spaces from each line
+    const trimmedLines = lines.map(line => line.slice(minSpaces));
+
+    // Join the trimmed lines back into a single string
+    return trimmedLines.join('\n');
+}
+
+
 
 export type KnownModel =
     | 'llama3'
@@ -31,9 +63,9 @@ export async function ollamaInference(args: {
         let images: string[] = [];
         for (let message of args.messages) {
             converted += `Message for: ${message.role}, This is the message: ${message.content} \n`
-            if(message.images){
-                images = message.images.map((image) => toBase64(image))
-            }
+            // if(message.images){
+            //     images = message.images.map((image) => toBase64(image))
+            // }
         }
         console.log("converted INput:",converted);
 

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Dude where’s my car?",
+    "name": "Low_vision_assistant",
     "slug": "find-anything",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -28,13 +28,28 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "permissions": [
+        "android.permission.BLUETOOTH",
+        "android.permission.BLUETOOTH_ADMIN",
+        "android.permission.BLUETOOTH_CONNECT"
+      ],
       "package": "com.basedhardware.find"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "react-native-ble-plx"
+      [
+        "react-native-ble-plx",
+        {
+          "isBackgroundEnabled": true,
+          "modes": [
+            "peripheral",
+            "central"
+          ],
+          "bluetoothAlwaysPermission": "Allow $(PRODUCT_NAME) to connect to bluetooth devices"
+        }
+      ]
     ],
     "experiments": {
       "baseUrl": "/llama3-hackaton"

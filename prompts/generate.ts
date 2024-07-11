@@ -2,7 +2,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as progress from 'cli-progress';
 import { imageDescription } from '../sources/agent/imageDescription';
-import { imageBlurry } from '../sources/agent/imageBlurry';
 
 (async () => {
 
@@ -49,12 +48,6 @@ import { imageBlurry } from '../sources/agent/imageBlurry';
     await runTest('Description (moondream:1.8b-v2-fp16)', async (img) => {
         return await imageDescription(img, 'moondream:1.8b-v2-fp16');
     });
-
-    // console.log(`Run blurry tests`);
-    // for (let i of imageTests) {
-    //     i.outputs += '####Blurry####\n';
-    //     i.outputs += await imageBlurry(i.image) + '\n';
-    // }
 
     // Write outputs
     for (let i of imageTests) {

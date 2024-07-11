@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AsyncLock } from "../utils/lock";
 import { imageDescription, llamaFind } from "./imageDescription";
-import { startAudio } from '../modules/openai';
+// import { startAudio } from '../modules/openai';
 
 type AgentState = {
     lastDescription?: string;
@@ -39,11 +39,11 @@ export class Agent {
     }
 
     async answer(question: string) {
-        try {
-            startAudio()
-        } catch(error) {
-            console.log("Failed to start audio")
-        }
+        // try {
+        //     startAudio()
+        // } catch(error) {
+        //     console.log("Failed to start audio")
+        // }
         if (this.#state.loading) {
             return;
         }

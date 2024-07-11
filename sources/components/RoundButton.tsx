@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { ActivityIndicator, Platform, Pressable, StyleProp, Text, View, ViewStyle } from 'react-native';
+import { Alert, ActivityIndicator, Platform, Pressable, StyleProp, Text, View, ViewStyle } from 'react-native';
 import { iOSUIKit } from 'react-native-typography';
 import { Theme } from './theme';
 
 export type RoundButtonSize = 'large' | 'normal' | 'small';
 const sizes: { [key in RoundButtonSize]: { height: number, fontSize: number, hitSlop: number, pad: number } } = {
-    large: { height: 48, fontSize: 21, hitSlop: 0, pad: Platform.OS == 'ios' ? 0 : -1 },
-    normal: { height: 32, fontSize: 16, hitSlop: 8, pad: Platform.OS == 'ios' ? 1 : -2 },
-    small: { height: 24, fontSize: 14, hitSlop: 12, pad: Platform.OS == 'ios' ? -1 : -1 }
+    large: { height: 48, fontSize: 20, hitSlop: 0, pad: Platform.OS == 'ios' ? 0 : -1 },
+    normal: { height: 32, fontSize: 15, hitSlop: 8, pad: Platform.OS == 'ios' ? 1 : -2 },
+    small: { height: 24, fontSize: 13, hitSlop: 12, pad: Platform.OS == 'ios' ? -1 : -1 }
 }
 
 export type RoundButtonDisplay = 'default' | 'inverted';
@@ -41,7 +41,13 @@ export const RoundButton = React.memo((props: { size?: RoundButtonSize, display?
             (async () => {
                 try {
                     await props.action!();
-                } finally {
+                } 
+                catch (e: any) {
+                    Alert.alert('Error', e.message || e);
+                    console.error("Error: ", e);
+                }
+                
+                finally {
                     setLoading(false);
                 }
             })();
